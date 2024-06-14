@@ -25,24 +25,17 @@ RUN echo '<Directory "/var/www/html">' > /etc/apache2/conf-available/custom.conf
     echo '</Directory>' >> /etc/apache2/conf-available/custom.conf && \
     a2enconf custom
 
-# Use the default production configuration for PHP
-RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+# Use the default production configuration if it exists
+RUN if [ -f "/usr/local/etc/php/php.ini-production" ]; then \
+        mv "/usr/local/etc/php/php.ini-production" "/usr/local/etc/php/php.ini"; \
+    fi
 
-# Optionally adjust PHP settings for file uploads, memory limits, etc.
-# RUN sed -i 's/upload_max_filesize = 2M/upload_max_filesize = 10M/' $PHP_INI_DIR/php.ini
-# RUN sed -i 's/post_max_size = 8M/post_max_size = 20M/' $PHP_INI_DIR/php.ini
+# If any additional PHP configuration is required, you can uncomment the following lines:
+# RUN sed -i 's/upload_max_filesize = 2M/upload_max_filesize = 10M/' /usr/local/etc/php/php.ini
+# RUN sed -i 's/post_max_size = 8M/post_max_size = 20M/' /usr/local/etc/php/php.ini
 
 # Expose port 80 to allow communication to/from the server
 EXPOSE 80
-
-# Use the default production configuration
-RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
-
-# Further customize the configuration, if necessary
-# RUN sed -i 's/upload_max_filesize = 2M/upload_max_filesize = 10M/' $PHP_INI_DIR/php.ini
-
-# Grant permissions for the public directory (adjust as necessary)
-RUN chown -R www-data:www-data /var/www/html && chmod -R 755 /var/www/html
 
 # Start Apache server in the foreground
 CMD ["apache2-foreground"]
