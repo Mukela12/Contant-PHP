@@ -17,7 +17,7 @@ RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 # RUN sed -i 's/upload_max_filesize = 2M/upload_max_filesize = 10M/' $PHP_INI_DIR/php.ini
 
 # Grant permissions for the public directory (adjust as necessary)
-RUN chown -R www-data:www-data /var/www/html
+RUN chown -R www-data:www-data /var/www/html && chmod -R 755 /var/www/html
 
 # Start Apache server in the foreground
 CMD ["apache2-foreground"]
