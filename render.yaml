@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: php-contact-form
+    env: docker
+    plan: starter
+    healthCheckPath: /
+    ports:
+      - port: 80
+        handlers:
+          - http
+    buildCommand: docker build -t php-app .
+    startCommand: docker run -p 80:80 php-app
