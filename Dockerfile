@@ -1,6 +1,9 @@
 # Use an official PHP runtime with Apache as the base image
 FROM php:7.4-apache
 
+# Set the server name to avoid the fully qualified domain name warning
+RUN echo 'ServerName localhost' >> /etc/apache2/apache2.conf
+
 # Set the working directory inside the container to the Apache document root
 WORKDIR /var/www/html
 
@@ -30,9 +33,9 @@ RUN if [ -f "/usr/local/etc/php/php.ini-production" ]; then \
         mv "/usr/local/etc/php/php.ini-production" "/usr/local/etc/php/php.ini"; \
     fi
 
-# If any additional PHP configuration is required, you can uncomment the following lines:
-# RUN sed -i 's/upload_max_filesize = 2M/upload_max_filesize = 10M/' /usr/local/etc/php/php.ini
-# RUN sed -i 's/post_max_size = 8M/post_max_size = 20M/' /usr/local/etc/php/php.ini
+# Ensure there is an index file to prevent directory listing issues
+RUN touch /var/www/html/index.php
+RUN echo "<?php phpinfo(); ?>" > /var/www/html/index.php
 
 # Expose port 80 to allow communication to/from the server
 EXPOSE 80
