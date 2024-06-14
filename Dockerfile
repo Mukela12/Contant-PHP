@@ -35,7 +35,6 @@ RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 # Expose port 80 to allow communication to/from the server
 EXPOSE 80
 
-<<<<<<< HEAD
 # Use the default production configuration
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
@@ -45,7 +44,5 @@ RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 # Grant permissions for the public directory (adjust as necessary)
 RUN chown -R www-data:www-data /var/www/html && chmod -R 755 /var/www/html
 
-=======
->>>>>>> 8dcfc021e2661a9f238c3346a13c17e5629f8010
 # Start Apache server in the foreground
 CMD ["apache2-foreground"]
