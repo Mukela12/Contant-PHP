@@ -28,14 +28,13 @@ RUN echo '<Directory "/var/www/html">' > /etc/apache2/conf-available/custom.conf
     echo '</Directory>' >> /etc/apache2/conf-available/custom.conf && \
     a2enconf custom
 
+# Set contact.php as the default index file
+RUN echo 'DirectoryIndex contact.php' >> /etc/apache2/conf-available/custom.conf
+
 # Use the default production configuration if it exists
 RUN if [ -f "/usr/local/etc/php/php.ini-production" ]; then \
         mv "/usr/local/etc/php/php.ini-production" "/usr/local/etc/php/php.ini"; \
     fi
-
-# Ensure there is an index file to prevent directory listing issues
-RUN touch /var/www/html/index.php
-RUN echo "<?php ?>" > /var/www/html/index.php
 
 # Expose port 80 to allow communication to/from the server
 EXPOSE 80
